@@ -60,7 +60,7 @@
                                 <span class="text-purple-400 text-sm font-medium">Starting from $20/hour</span>
                             </div>
                             <div class="mt-4">
-                                <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
+                                <a href="{{ route('register') }}" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                                 <span class="text-purple-400 text-sm font-medium">Starting from $25/hour</span>
                             </div>
                             <div class="mt-4">
-                                <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
+                                <a href="{{ route('register') }}" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                                 <span class="text-purple-400 text-sm font-medium">Starting from $30/hour</span>
                             </div>
                             <div class="mt-4">
-                                <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
+                                <a href="{{ route('register') }}" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
                             </div>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                                 <span class="text-purple-400 text-sm font-medium">Starting from $20/hour</span>
                             </div>
                             <div class="mt-4">
-                                <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
+                                <a href="{{ route('register') }}" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
                             </div>
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                                 <span class="text-purple-400 text-sm font-medium">Starting from $25/hour</span>
                             </div>
                             <div class="mt-4">
-                                <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
+                                <a href="{{ route('register') }}" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
                             </div>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                                 <span class="text-purple-400 text-sm font-medium">Starting from $22/hour</span>
                             </div>
                             <div class="mt-4">
-                                <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
+                                <a href="{{ route('register') }}" class="text-purple-400 hover:text-purple-300 text-sm font-medium">View Details →</a>
                             </div>
                         </div>
                     </div>

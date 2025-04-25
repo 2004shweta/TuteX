@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
     return view('landing');
@@ -78,4 +79,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Feedback routes
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+
+    // Chat routes
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/{chat}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
 });
