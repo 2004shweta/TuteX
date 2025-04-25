@@ -16,7 +16,7 @@
                     </div>
                 @else
                     @foreach($tutors as $tutor)
-                        <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="p-6">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
@@ -44,6 +44,53 @@
                                     <p class="mt-2 text-sm text-gray-600">{{ Str::limit($tutor->bio, 100) }}</p>
                                     <div class="mt-4 flex justify-between items-center">
                                         <span class="text-lg font-semibold text-gray-900">${{ $tutor->hourly_rate }}/hr</span>
+                                    </div>
+
+                                    <!-- Available Slots -->
+                                    <div class="mt-4">
+                                        <h4 class="text-sm font-medium text-gray-900 mb-2">Available Slots (Next 7 Days)</h4>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            @php
+                                                $availableSlots = [];
+                                                $bookedSlots = $tutor->bookingsAsTutor->pluck('start_time')->toArray();
+                                                
+                                                // Generate available slots for next 7 days
+                                                for ($i = 0; $i < 7; $i++) {
+                                                    $date = now()->addDays($i);
+                                                    for ($hour = 9; $hour < 17; $hour++) {
+                                                        $slot = $date->copy()->setHour($hour)->setMinute(0);
+                                                        if (!in_array($slot->format('Y-m-d H:i:s'), $bookedSlots)) {
+                                                            $availableSlots[] = $slot;
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                // Limit to 14 slots (2 per day)
+                                                $availableSlots = array_slice($availableSlots, 0, 14);
+                                            @endphp
+
+                                            @foreach($availableSlots as $slot)
+                                                <form action="{{ route('bookings.store') }}" method="POST" class="inline">
+                                                    @csrf
+                                                    <input type="hidden" name="tutor_id" value="{{ $tutor->id }}">
+                                                    <input type="hidden" name="date" value="{{ $slot->format('Y-m-d') }}">
+                                                    <input type="hidden" name="start_time" value="{{ $slot->format('H:i') }}">
+                                                    <input type="hidden" name="duration" value="1">
+                                                    <button type="submit" class="w-full text-sm px-3 py-1 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                        {{ $slot->format('D, M j') }} {{ $slot->format('g:i A') }}
+                                                    </button>
+                                                </form>
+                                            @endforeach
+                                        </div>
+                                        @if(count($availableSlots) > 0)
+                                            <p class="mt-2 text-sm text-gray-500">Showing {{ count($availableSlots) }} available slots. Click "View Profile" for more options.</p>
+                                        @else
+                                            <p class="mt-2 text-sm text-gray-500">No available slots for the next 7 days. Please check back later.</p>
+                                        @endif
+                                    </div>
+
+                                    <!-- View Profile Button -->
+                                    <div class="mt-4">
                                         <a href="{{ route('tutors.show', $tutor) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                             View Profile
                                         </a>

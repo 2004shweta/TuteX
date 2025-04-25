@@ -56,6 +56,51 @@
                                     Browse Tutors
                                 </a>
                             </div>
+
+                            <!-- Book a Session -->
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h3 class="text-lg font-semibold mb-4">Book a Session</h3>
+                                <form action="{{ route('bookings.store') }}" method="POST" class="space-y-4">
+                                    @csrf
+                                    <div>
+                                        <label for="tutor_id" class="block text-sm font-medium text-gray-700">Select Tutor</label>
+                                        <select name="tutor_id" id="tutor_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                                            <option value="">Choose a tutor</option>
+                                            @foreach($availableTutors as $tutor)
+                                                <option value="{{ $tutor->id }}">{{ $tutor->name }} - ${{ $tutor->hourly_rate }}/hr</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                                        <input type="date" name="date" id="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required min="{{ date('Y-m-d') }}">
+                                    </div>
+
+                                    <div>
+                                        <label for="start_time" class="block text-sm font-medium text-gray-700">Start Time</label>
+                                        <input type="time" name="start_time" id="start_time" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                                    </div>
+
+                                    <div>
+                                        <label for="duration" class="block text-sm font-medium text-gray-700">Duration (hours)</label>
+                                        <select name="duration" id="duration" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                                            <option value="1">1 hour</option>
+                                            <option value="2">2 hours</option>
+                                            <option value="3">3 hours</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label for="notes" class="block text-sm font-medium text-gray-700">Notes (optional)</label>
+                                        <textarea name="notes" id="notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                                    </div>
+
+                                    <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                        Book Session
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     @elseif(auth()->user()->isTutor())
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

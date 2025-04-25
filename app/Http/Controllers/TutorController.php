@@ -11,6 +11,10 @@ class TutorController extends Controller
     public function index(Request $request)
     {
         $tutors = User::where('role', 'tutor')
+            ->with(['bookingsAsTutor' => function($query) {
+                $query->where('start_time', '>', now())
+                    ->where('status', '!=', 'cancelled');
+            }])
             ->paginate(12);
 
         return view('tutors.index', compact('tutors'));
