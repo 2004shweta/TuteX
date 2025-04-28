@@ -29,7 +29,7 @@
                             <a href="{{ route('tutors.index') }}" class="nav-link">Find Tutors</a>
                             <a href="{{ route('courses.index') }}" class="nav-link">Courses</a>
                             <a href="{{ route('contact') }}" class="nav-link">Contact</a>
-                            <a href="#" class="nav-link">Become a Tutor</a>
+                            <a href="{{ route('tutors.create') }}" class="nav-link">Become a Tutor</a>
                         </div>
                     </div>
                     <div class="flex items-center">

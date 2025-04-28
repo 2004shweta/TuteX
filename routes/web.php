@@ -56,12 +56,17 @@ Route::get('/become-tutor', function () {
     return view('become-tutor');
 })->name('become-tutor');
 
+// Tutor registration routes (public)
+Route::get('/tutors/create', [TutorController::class, 'create'])->name('tutors.create');
+Route::post('/tutors', [TutorController::class, 'store'])->name('tutors.store');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     // Tutor routes
     Route::get('/tutors', [TutorController::class, 'index'])->name('tutors.index');
     Route::get('/tutors/{tutor}', [TutorController::class, 'show'])->name('tutors.show');
+    Route::get('/tutors/{tutor}/dashboard', [TutorController::class, 'dashboard'])->name('tutors.dashboard');
     
     // Booking routes
     Route::resource('bookings', BookingController::class);

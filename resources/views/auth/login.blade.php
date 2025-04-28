@@ -34,11 +34,11 @@
             <div class="max-w-md mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                     <div class="text-center mb-8">
-                        <h2 class="text-3xl font-bold text-gray-900">Welcome Back</h2>
+                        <h2 class="text-3xl font-bold text-gray-900">Welcome Back, Student!</h2>
                         <p class="mt-2 text-sm text-gray-600">
-                            Don't have an account?
+                            New to TuteX?
                             <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500">
-                                Register here
+                                Create your student account
                             </a>
                         </p>
                     </div>
@@ -86,7 +86,7 @@
 
                         <div>
                             <button type="submit" class="btn-primary w-full">
-                                Sign in
+                                Sign in to your student account
                             </button>
                         </div>
                     </form>

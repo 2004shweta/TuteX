@@ -34,11 +34,11 @@
             <div class="max-w-md mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                     <div class="text-center mb-8">
-                        <h2 class="text-3xl font-bold text-gray-900">Create an Account</h2>
+                        <h2 class="text-3xl font-bold text-gray-900">Create Your Student Account</h2>
                         <p class="mt-2 text-sm text-gray-600">
-                            Already have an account?
+                            Already a student at TuteX?
                             <a href="{{ route('login') }}" class="font-medium text-blue-600 hover:text-blue-500">
-                                Sign in here
+                                Sign in to your account
                             </a>
                         </p>
                     </div>
@@ -98,7 +98,7 @@
 
                         <div>
                             <button type="submit" class="btn-primary w-full">
-                                Create Account
+                                Create Student Account
                             </button>
                         </div>
                     </form>

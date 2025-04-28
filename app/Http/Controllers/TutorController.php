@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class TutorController extends Controller
 {
@@ -42,5 +45,111 @@ class TutorController extends Controller
             ->get();
 
         return view('tutors.show', compact('tutor', 'averageRating', 'totalReviews', 'recentReviews', 'completedSessions'));
+    }
+
+    /**
+     * Show the form for creating a new tutor.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
+        return view('tutors.create');
+    }
+
+    /**
+     * Store a newly created tutor in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        try {
+            // Debug the incoming request data
+            \Log::info('Tutor Registration Request Data:', $request->all());
+
+            $request->validate([
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'phone' => 'required|string|max:20',
+                'education' => 'required|string',
+                'experience' => 'required|string',
+                'subjects' => 'required|array',
+                'subjects.*' => 'string'
+            ]);
+
+            // Check if user already exists with this email
+            $existingUser = User::where('email', $request->email)->first();
+            
+            if ($existingUser) {
+                // If user exists, update their role to tutor
+                $existingUser->update([
+                    'name' => $request->first_name . ' ' . $request->last_name,
+                    'role' => 'tutor',
+                    'phone' => $request->phone,
+                    'subjects' => $request->subjects,
+                    'education' => $request->education,
+                    'experience' => $request->experience,
+                    'bio' => $request->education . "\n\n" . $request->experience,
+                    'status' => 'pending'
+                ]);
+                $tutor = $existingUser;
+            } else {
+                // Create new tutor user
+                $tutor = User::create([
+                    'name' => $request->first_name . ' ' . $request->last_name,
+                    'email' => $request->email,
+                    'password' => Hash::make(Str::random(10)), // Generate a random password
+                    'role' => 'tutor',
+                    'phone' => $request->phone,
+                    'subjects' => $request->subjects,
+                    'education' => $request->education,
+                    'experience' => $request->experience,
+                    'bio' => $request->education . "\n\n" . $request->experience,
+                    'status' => 'pending'
+                ]);
+            }
+
+            // Log in the tutor
+            Auth::login($tutor);
+
+            // Debug the created tutor
+            \Log::info('Created Tutor:', $tutor->toArray());
+
+            // Redirect to the tutor's dashboard
+            return redirect()->route('tutors.dashboard', ['tutor' => $tutor->id])
+                ->with('success', 'Your tutor application has been submitted successfully! We will review your application and get back to you soon.')
+                ->with('debug', [
+                    'request_data' => $request->all(),
+                    'tutor_data' => $tutor->toArray()
+                ]);
+        } catch (\Exception $e) {
+            // Log the error
+            \Log::error('Tutor registration error: ' . $e->getMessage());
+            
+            // Return back with error message and debug info
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'An error occurred while processing your application. Please try again.'])
+                ->with('debug', [
+                    'error' => $e->getMessage(),
+                    'request_data' => $request->all()
+                ]);
+        }
+    }
+
+    public function dashboard(User $tutor)
+    {
+        // Ensure the authenticated user is the tutor
+        if (Auth::id() !== $tutor->id) {
+            abort(403);
+        }
+
+        // Get the tutor's data
+        $tutor = User::findOrFail($tutor->id);
+
+        return view('tutors.dashboard', compact('tutor'));
     }
 } 
