@@ -13,6 +13,38 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+    public function showTutorLoginForm()
+    {
+        return view('auth.tutor-login');
+    }
+
+    public function tutorLogin(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            
+            // Check if user is a tutor
+            if (Auth::user()->isTutor()) {
+                return redirect()->route('tutors.dashboard', ['tutor' => Auth::user()->id]);
+            }
+            
+            // If not a tutor, log them out and show error
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'This account is not registered as a tutor.',
+            ])->onlyInput('email');
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -22,6 +54,12 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            
+            // Check if user is a tutor
+            if (Auth::user()->isTutor()) {
+                return redirect()->route('tutors.dashboard', ['tutor' => Auth::user()->id]);
+            }
+            
             return redirect()->intended('dashboard');
         }
 

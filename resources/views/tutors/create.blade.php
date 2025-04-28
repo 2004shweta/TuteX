@@ -109,6 +109,20 @@
                                             <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
                                             <input type="tel" name="phone" id="phone" value="{{ old('phone') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                         </div>
+                                        <div>
+                                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                                            <input type="password" name="password" id="password" required 
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                            <p class="mt-1 text-sm text-gray-500">Create a password for your tutor account</p>
+                                            @error('password')
+                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div>
+                                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                                            <input type="password" name="password_confirmation" id="password_confirmation" required 
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        </div>
                                     </div>
                                 </div>
 
@@ -161,6 +175,15 @@
                                     <button type="submit" class="w-full btn-primary">
                                         Submit Application
                                     </button>
+                                </div>
+
+                                <div class="mt-6 text-center">
+                                    <p class="text-sm text-gray-600">
+                                        Already a tutor? 
+                                        <a href="{{ route('tutor.login') }}" class="font-medium text-blue-600 hover:text-blue-500">
+                                            Login to your tutor dashboard
+                                        </a>
+                                    </p>
                                 </div>
                             </div>
                         </form>

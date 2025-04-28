@@ -74,6 +74,7 @@ class TutorController extends Controller
                 'last_name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'phone' => 'required|string|max:20',
+                'password' => 'required|string|min:8|confirmed',
                 'education' => 'required|string',
                 'experience' => 'required|string',
                 'subjects' => 'required|array',
@@ -84,10 +85,11 @@ class TutorController extends Controller
             $existingUser = User::where('email', $request->email)->first();
             
             if ($existingUser) {
-                // If user exists, update their role to tutor
+                // If user exists, update their role to tutor and password
                 $existingUser->update([
                     'name' => $request->first_name . ' ' . $request->last_name,
                     'role' => 'tutor',
+                    'password' => Hash::make($request->password),
                     'phone' => $request->phone,
                     'subjects' => $request->subjects,
                     'education' => $request->education,
@@ -101,7 +103,7 @@ class TutorController extends Controller
                 $tutor = User::create([
                     'name' => $request->first_name . ' ' . $request->last_name,
                     'email' => $request->email,
-                    'password' => Hash::make(Str::random(10)), // Generate a random password
+                    'password' => Hash::make($request->password),
                     'role' => 'tutor',
                     'phone' => $request->phone,
                     'subjects' => $request->subjects,
@@ -151,5 +153,30 @@ class TutorController extends Controller
         $tutor = User::findOrFail($tutor->id);
 
         return view('tutors.dashboard', compact('tutor'));
+    }
+
+    public function update(Request $request, User $tutor)
+    {
+        // Ensure the authenticated user is the tutor
+        if (Auth::id() !== $tutor->id) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $tutor->id,
+            'phone' => 'required|string|max:20',
+            'education' => 'required|string',
+            'experience' => 'required|string',
+            'subjects' => 'required|string',
+        ]);
+
+        // Convert subjects string to array
+        $validated['subjects'] = array_map('trim', explode(',', $validated['subjects']));
+
+        $tutor->update($validated);
+
+        return redirect()->route('tutors.dashboard', $tutor)
+            ->with('success', 'Profile updated successfully!');
     }
 } 

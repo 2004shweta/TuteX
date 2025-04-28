@@ -21,6 +21,8 @@ Route::get('/welcome', function () {
 
 // Authentication Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::get('/tutor/login', [LoginController::class, 'showTutorLoginForm'])->name('tutor.login');
+Route::post('/tutor/login', [LoginController::class, 'tutorLogin'])->name('tutor.login.submit');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -67,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tutors', [TutorController::class, 'index'])->name('tutors.index');
     Route::get('/tutors/{tutor}', [TutorController::class, 'show'])->name('tutors.show');
     Route::get('/tutors/{tutor}/dashboard', [TutorController::class, 'dashboard'])->name('tutors.dashboard');
+    Route::put('/tutors/{tutor}', [TutorController::class, 'update'])->name('tutors.update');
     
     // Booking routes
     Route::resource('bookings', BookingController::class);
