@@ -26,7 +26,7 @@
                         </div>
                         <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                             <a href="/" class="nav-link">Home</a>
-                            <a href="{{ route('tutors.index') }}" class="nav-link">Find Tutors</a>
+                            <!-- <a href="{{ route('tutors.index') }}" class="nav-link">Find Tutors</a> -->
                             <a href="{{ route('courses.index') }}" class="nav-link">Courses</a>
                             <a href="{{ route('contact') }}" class="nav-link">Contact</a>
                         </div>

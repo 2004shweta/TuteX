@@ -28,6 +28,8 @@ class User extends Authenticatable
         'profile_picture',
         'subjects',
         'hourly_rate',
+        'education',
+        'experience',
     ];
 
     /**
@@ -71,7 +73,10 @@ class User extends Authenticatable
 
     public function reviewsAsTutor()
     {
-        return $this->hasMany(Review::class, 'tutor_id');
+        \Log::info('Loading reviews for tutor', ['tutor_id' => $this->id]);
+        $reviews = $this->hasMany(Review::class, 'tutor_id');
+        \Log::info('Reviews query', ['sql' => $reviews->toSql(), 'bindings' => $reviews->getBindings()]);
+        return $reviews;
     }
 
     public function education()

@@ -29,13 +29,24 @@ class TutorController extends Controller
             abort(404);
         }
 
+        \Log::info('Loading tutor profile', ['tutor_id' => $tutor->id]);
+
         $averageRating = $tutor->reviewsAsTutor()->avg('rating') ?? 0;
         $totalReviews = $tutor->reviewsAsTutor()->count();
+        \Log::info('Review statistics', [
+            'average_rating' => $averageRating,
+            'total_reviews' => $totalReviews
+        ]);
+
         $recentReviews = $tutor->reviewsAsTutor()
             ->with('student')
             ->latest()
             ->take(5)
             ->get();
+        \Log::info('Recent reviews loaded', [
+            'count' => $recentReviews->count(),
+            'reviews' => $recentReviews->toArray()
+        ]);
             
         // Get completed sessions for the current user with this tutor
         $completedSessions = Booking::where('tutor_id', $tutor->id)
@@ -144,8 +155,13 @@ class TutorController extends Controller
 
     public function dashboard(User $tutor)
     {
-        // Ensure the authenticated user is the tutor
-        if (Auth::id() !== $tutor->id) {
+        // If user is not authenticated and not the tutor being viewed, redirect to login
+        if (!Auth::check() && Auth::id() !== $tutor->id) {
+            return redirect()->route('login')->with('error', 'Please login to access the dashboard.');
+        }
+
+        // If user is authenticated but trying to access another tutor's dashboard
+        if (Auth::check() && Auth::id() !== $tutor->id) {
             abort(403);
         }
 

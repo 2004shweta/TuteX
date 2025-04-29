@@ -26,14 +26,6 @@
                                         </div>
                                         <span class="ml-2 text-sm text-gray-600">({{ $totalReviews }} reviews)</span>
                                     </div>
-                                    @auth
-                                        <a href="{{ route('chat.show', ['chat' => $tutor->id]) }}" class="mt-4 inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                            <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                                            </svg>
-                                            Chat with {{ $tutor->name }}
-                                        </a>
-                                    @endauth
                                 </div>
                             </div>
 
@@ -113,7 +105,7 @@
                                         <select name="session_id" id="session_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                             <option value="">Select a session</option>
                                             @foreach($completedSessions as $session)
-                                                <option value="{{ $session->id }}">{{ $session->date }} - {{ $session->start_time }}</option>
+                                                <option value="{{ $session->id }}">{{ $session->start_time->format('M d, Y') }} at {{ $session->start_time->format('h:i A') }}</option>
                                             @endforeach
                                         </select>
                                     </div>

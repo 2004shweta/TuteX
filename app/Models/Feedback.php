@@ -19,7 +19,7 @@ class Feedback extends Model
 
     public function tutor()
     {
-        return $this->belongsTo(Tutor::class);
+        return $this->belongsTo(User::class, 'tutor_id');
     }
 
     public function student()
